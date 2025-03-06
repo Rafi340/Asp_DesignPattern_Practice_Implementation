@@ -1,6 +1,8 @@
-﻿using Demo.Domain.Entities;
+﻿using Demo.Application.Features.Books.Commands;
+using Demo.Domain.Entities;
 using Demo.Domain.Services;
 using Demo.Web.Areas.Admin.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Web.Areas.Admin.Controllers
@@ -8,10 +10,10 @@ namespace Demo.Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class BooksController : Controller
     {
-        private readonly IBookService? _bookService;
-        public BooksController(IBookService bookService)
+        private readonly IMediator _mediator;
+        public BooksController(IMediator mediator)
         {
-            _bookService = bookService;
+            _mediator = mediator;
         }
         public IActionResult Index()
         {
@@ -19,21 +21,17 @@ namespace Demo.Web.Areas.Admin.Controllers
         }
         public IActionResult Add()
         {
-            var model = new AddBookModel();
+            var model = new BookAddCommand();
             return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Add(AddBookModel model)
+        public async Task<IActionResult> Add(BookAddCommand bookAddCommand)
         {
             if(ModelState.IsValid)
             {
-                _bookService.AddBook(new Book
-                {
-                    Title = model.Title,
-                    PublishDate = DateTime.Now,
-                });
+                _mediator.Send(bookAddCommand);
             }
-            return View(model);
+            return View(bookAddCommand);
         }
     }
 }

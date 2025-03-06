@@ -1,9 +1,12 @@
 using Autofac;
+using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 using Demo;
+using Demo.Application.Features.Books.Commands;
 using Demo.Data;
 using Demo.Infrastructure;
 using Demo.Models.Demo;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -45,6 +48,10 @@ try
      .Enrich.FromLogContext()
      .ReadFrom.Configuration(builder.Configuration)
      );
+    #region Mediator
+    builder.Services.AddMediatR(cfg => 
+    cfg.RegisterServicesFromAssembly(typeof(BookAddCommand).Assembly));
+    #endregion
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
       options.UseSqlServer(connectionString, (x) => x.MigrationsAssembly(migrationAssembly)));
 
