@@ -52,6 +52,9 @@ try
     builder.Services.AddMediatR(cfg => 
     cfg.RegisterServicesFromAssembly(typeof(BookAddCommand).Assembly));
     #endregion
+    #region Docker IP Correction
+    builder.WebHost.UseUrls("http://*:80");
+    #endregion
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
       options.UseSqlServer(connectionString, (x) => x.MigrationsAssembly(migrationAssembly)));
 
