@@ -1,4 +1,5 @@
-﻿using Demo.Domain.Entities;
+﻿using Demo.Domain;
+using Demo.Domain.Entities;
 using Demo.Domain.Services;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,9 @@ namespace Demo.Application.Services
             
         }
 
-        
+        public (IList<Author> data, int total, int totalDisplay) GetAuthors(int pageIndex, int pageSize, string? order, DataTablesSearch search)
+        {
+            return _applicationUnitOfWork.AuthorRepository.GetPagedAuthors(pageIndex, pageSize, order, search);
+        }
     }
 }
