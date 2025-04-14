@@ -1,6 +1,7 @@
 ﻿using Demo.Domain;
 using Demo.Domain.Services;
 using System.Data;
+using System.Web;
 
 namespace Demo.Web.Areas.Admin.Models
 {
@@ -8,8 +9,26 @@ namespace Demo.Web.Areas.Admin.Models
     {
         public object GetAuthor(IAuthorService authorService)
         {
-          var result =  authorService.GetAuthors(PageIndex, PageSize, FormatSortExpression("Name"), Search);
-          return result;
+            try
+            { 
+                var result = authorService.GetAuthors(PageIndex, PageSize, FormatSortExpression("Name"), Search);
+                var author = new
+                {
+                    recordsTotal = result.total,
+                    recoardsFilters = result.totalDisplay,
+                    data = (from record in result.data
+                            select new string[]
+                            {
+                                HttpUtility.HtmlEncode(record.Name),
+                                record.Id.ToString()
+                            }).ToArray()
+                };
+                return author;
+            } catch 
+            {
+                return EmptyResult;
+            }
+                
         }
     }
 }
