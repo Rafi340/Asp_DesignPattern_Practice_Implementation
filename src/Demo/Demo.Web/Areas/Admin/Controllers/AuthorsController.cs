@@ -1,19 +1,19 @@
-﻿using Demo.Domain.Entities;
+﻿using Demo.Application.Services;
+using Demo.Domain;
+using Demo.Domain.Entities;
 using Demo.Domain.Services;
 using Demo.Web.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Web;
 
 namespace Demo.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class AuthorsController : Controller
+    public class AuthorsController(IAuthorService authorService, ILogger<AuthorsController> logger) : Controller
     {
 
-        private readonly IAuthorService? _authorService;
-        public AuthorsController(IAuthorService authorService)
-        {
-            _authorService = authorService;
-        }
+        private readonly IAuthorService? _authorService = authorService;
+        private readonly ILogger<AuthorsController> _logger = logger;
 
         public IActionResult Index()
         {
@@ -40,8 +40,28 @@ namespace Demo.Web.Areas.Admin.Controllers
 
         public JsonResult GetAuthorJsonData(AuthorListModel model)
         {
-            var author = model.GetAuthor(_authorService);
-            return Json(author);
+            try
+            {
+                var (data, total, totalDisplay) = _authorService.GetAuthors(model.PageIndex, model.PageSize, model.FormatSortExpression("Name"), model.Search);
+                var author = new
+                {
+                    recordsTotal = total,
+                    recoardsFilters = totalDisplay,
+                    data = (from record in data
+                            select new string[]
+                            {
+                                HttpUtility.HtmlEncode(record.Name),
+                                record.Id.ToString()
+                            }).ToArray()
+                };
+                return Json(author);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "There was a problem with author");
+                return Json(DataTables.EmptyResult);
+            }
+            
         }
     }
 }
