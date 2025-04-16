@@ -103,18 +103,18 @@
                 ajax: {
                     url: "/Admin/Authors/GetAuthorJsonData",
                     type: "POST",
-                   // contentType: "application/json", //must be added
-                 //   dataType: "json", //better to add, not mandatory
-                    // data: function (d) {
-                    //     d.SearchItem = {
-                    //     };
-                    //     return JSON.stringify(d);
-                    // },
+                   contentType: "application/json", //must be added
+                   dataType: "json", //better to add, not mandatory
+                    data: function (d) {
+                        d.SearchItem = {
+                        };
+                        return JSON.stringify(d);
+                    },
                 },
                 columnDefs: [
                     {
                         orderable: false,
-                        targets: 1,
+                        targets: 3,
                         render: function (data, type, row) {
                             console.log(type);
                             return `<button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/admin/author/update/${data}'" value='${data}'>

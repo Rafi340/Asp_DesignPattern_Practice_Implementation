@@ -32,7 +32,9 @@ namespace Demo.Web.Areas.Admin.Controllers
             {
                 _authorService.AddAuthor(new Author
                 {
-                    Name = model.Name
+                    Name = model.Name,
+                    Biography = string.Empty,
+                    Rating = 4.4
                 });
             }
             return View(model);
@@ -42,7 +44,7 @@ namespace Demo.Web.Areas.Admin.Controllers
         {
             try
             {
-                var (data, total, totalDisplay) = _authorService.GetAuthors(model.PageIndex, model.PageSize, model.FormatSortExpression("Name"), model.Search);
+                var (data, total, totalDisplay) = _authorService.GetAuthors(model.PageIndex, model.PageSize, model.FormatSortExpression("Name","Biography","Rating","Id"), model.Search);
                 var author = new
                 {
                     recordsTotal = total,
@@ -51,6 +53,8 @@ namespace Demo.Web.Areas.Admin.Controllers
                             select new string[]
                             {
                                 HttpUtility.HtmlEncode(record.Name),
+                                HttpUtility.HtmlEncode(record.Biography), 
+                                HttpUtility.HtmlEncode(record.Rating),
                                 record.Id.ToString()
                             }).ToArray()
                 };
