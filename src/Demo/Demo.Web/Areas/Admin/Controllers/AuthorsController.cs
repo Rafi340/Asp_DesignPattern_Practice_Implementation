@@ -33,13 +33,13 @@ namespace Demo.Web.Areas.Admin.Controllers
                 _authorService.AddAuthor(new Author
                 {
                     Name = model.Name,
-                    Biography = string.Empty,
-                    Rating = 4.4
+                    Biography = model.Biography,
+                    Rating = model.Rating
                 });
             }
             return View(model);
         }
-        [HttpPost]
+        [HttpPost]  
         public JsonResult GetAuthorJsonData([FromBody]AuthorListModel model)
         {
             try

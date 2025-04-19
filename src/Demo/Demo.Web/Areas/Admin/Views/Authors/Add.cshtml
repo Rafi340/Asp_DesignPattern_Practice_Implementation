@@ -54,13 +54,39 @@
                                 <label asp-for="Name" class="form-label">Author Name</label>
                                 <input type="text"
                                        class="form-control"
-                                       id="Title"
-                                       aria-describedby="titleHelp"
+                                       id="Name"
+                                       aria-describedby="nameHelp"
                                        asp-for="Name" />
 
                             </div>
-                            <div id="titleHelp" class="form-text">
+                            <div id="NameHelp" class="form-text">
                                 Provide a friendly title
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Biography" class="form-label">Biography</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="Biography"
+                                       aria-describedby="biographyHelp"
+                                       asp-for="Biography" />
+
+                            </div>
+                            <div id="biographyHelp" class="form-text">
+                                Provide a Biography
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Rating" class="form-label">Rating</label>
+                                <input type="number"
+                                       class="form-control"
+                                       id="Rating"
+                                       aria-describedby="ratingHelp"
+                                       asp-for="Rating" />
+
+                            </div>
+                            <div id="ratingHelp" class="form-text">
+                                Provide a Rating
                             </div>
                             
                         </div>
