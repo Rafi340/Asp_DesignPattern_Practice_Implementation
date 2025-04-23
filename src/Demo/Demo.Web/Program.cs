@@ -48,13 +48,21 @@ try
      .Enrich.FromLogContext()
      .ReadFrom.Configuration(builder.Configuration)
      );
+
+
     #region Mediator
     builder.Services.AddMediatR(cfg => 
     cfg.RegisterServicesFromAssembly(typeof(BookAddCommand).Assembly));
     #endregion
+
     #region Docker IP Correction
     builder.WebHost.UseUrls("http://*:80");
     #endregion
+
+    #region Automapper Configuration
+    builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+    #endregion
+
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
       options.UseSqlServer(connectionString, (x) => x.MigrationsAssembly(migrationAssembly)));
 

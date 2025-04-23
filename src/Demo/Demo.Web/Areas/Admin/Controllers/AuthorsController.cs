@@ -1,4 +1,5 @@
-﻿using Demo.Application.Services;
+﻿using AutoMapper;
+using Demo.Application.Services;
 using Demo.Domain;
 using Demo.Domain.Entities;
 using Demo.Domain.Services;
@@ -9,11 +10,13 @@ using System.Web;
 namespace Demo.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class AuthorsController(IAuthorService authorService, ILogger<AuthorsController> logger) : Controller
+    public class AuthorsController(IAuthorService authorService, ILogger<AuthorsController> logger,
+        IMapper mapper) : Controller
     {
 
         private readonly IAuthorService? _authorService = authorService;
         private readonly ILogger<AuthorsController> _logger = logger;
+        private readonly IMapper _mapper = mapper;
 
         public IActionResult Index()
         {
@@ -30,14 +33,21 @@ namespace Demo.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _authorService.AddAuthor(new Author
+                try
                 {
-                    Name = model.Name,
-                    Biography = model.Biography,
-                    Rating = model.Rating
-                });
+               
+                    var author = _mapper.Map<Author>(model);
+                    author.Id = IdentityGenerator.NewSequentialGuid();
+                    _authorService.AddAuthor(author);
+             
+                
+                }catch(Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to Add Author");
+                }
             }
             return View(model);
+
         }
         [HttpPost]  
         public JsonResult GetAuthorJsonData([FromBody]AuthorListModel model)
