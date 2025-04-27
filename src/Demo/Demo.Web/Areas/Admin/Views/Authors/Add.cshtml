@@ -28,15 +28,7 @@
         <div class="row g-4">
             <!--begin::Col-->
             <div class="col-12">
-                <div class="callout callout-info">
-                    For detailed documentation of Form visit
-                    <a href="https://getbootstrap.com/docs/5.3/forms/overview/"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="callout-link">
-                        Author Form
-                    </a>
-                </div>
+                <partial name="_ResponsePartial" />
             </div>
             <!--end::Col-->
             <!--begin::Col-->
@@ -49,6 +41,7 @@
                     <!--begin::Form-->
                     <form asp-antiforgery="true" asp-area="Admin" asp-controller="Authors" asp-action="Add" method="post">
                         <!--begin::Body-->
+                        <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="card-body">
                             <div class="mb-3">
                                 <label asp-for="Name" class="form-label">Author Name</label>
@@ -57,6 +50,7 @@
                                        id="Name"
                                        aria-describedby="nameHelp"
                                        asp-for="Name" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
 
                             </div>
                             <div id="NameHelp" class="form-text">
@@ -70,7 +64,7 @@
                                        id="Biography"
                                        aria-describedby="biographyHelp"
                                        asp-for="Biography" />
-
+                                <span asp-validation-for="Biography" class="text-danger"></span>
                             </div>
                             <div id="biographyHelp" class="form-text">
                                 Provide a Biography
@@ -83,6 +77,8 @@
                                        id="Rating"
                                        aria-describedby="ratingHelp"
                                        asp-for="Rating" />
+                                <span asp-validation-for="Rating" class="text-danger"></span>
+
 
                             </div>
                             <div id="ratingHelp" class="form-text">
@@ -107,3 +103,8 @@
         <!--end::Container-->
     </div>
 </div>
+@section Scripts
+{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+}

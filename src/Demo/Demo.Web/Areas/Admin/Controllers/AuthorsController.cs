@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Demo.Application.Exceptions;
 using Demo.Application.Services;
 using Demo.Domain;
 using Demo.Domain.Entities;
 using Demo.Domain.Services;
+using Demo.Infrastructure;
 using Demo.Web.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Web;
@@ -39,11 +41,32 @@ namespace Demo.Web.Areas.Admin.Controllers
                     var author = _mapper.Map<Author>(model);
                     author.Id = IdentityGenerator.NewSequentialGuid();
                     _authorService.AddAuthor(author);
-             
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message= "Author added Sucessfully",
+                        Type =ResponseTypes.Success,
+                    });
+                    return RedirectToAction("Index");
                 
-                }catch(Exception ex)
+                }catch(DuplicateAuthorNameException IO)
                 {
+                    ModelState.AddModelError("DuplicateAuthor", IO.Message);
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message = IO.Message,
+                        Type = ResponseTypes.Danger,
+                    });
+                }
+                catch(Exception ex)
+                {
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message = "Author added Failes",
+                        Type = ResponseTypes.Danger,
+                    });
                     _logger.LogError(ex, "Failed to Add Author");
+
+                    return View(model);
                 }
             }
             return View(model);

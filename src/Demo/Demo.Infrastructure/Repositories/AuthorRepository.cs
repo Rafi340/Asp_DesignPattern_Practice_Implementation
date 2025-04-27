@@ -15,6 +15,17 @@ namespace Demo.Infrastructure.Repositories
         {
         }
 
+        public bool IsNameDuplicate(string name, Guid? id = null)
+        {
+            if (id.HasValue)
+            {
+                return GetCount(x => x.Id != id.Value && x.Name == name) > 0;
+            }else
+            {
+                return GetCount(x => x.Name == name) > 0;
+            }
+        }
+
         public (IList<Author> data, int total, int totalDisplay) GetPagedAuthors(int pageIndex, int pageSize, string? order, DataTablesSearch search)
         {
             if (string.IsNullOrEmpty(search.Value))
