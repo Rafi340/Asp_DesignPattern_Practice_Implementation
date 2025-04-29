@@ -5,6 +5,7 @@
 @section Styles
 {
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.min.css">
 }
 
 <!--begin::App Content Header-->
@@ -38,6 +39,7 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <partial name="_ResponsePartial" />
+                        <partial name="_ModalPartial" />
                         <table id="authors" class="table table-bordered">
                             <thead>
                                 <tr>
@@ -114,6 +116,19 @@
                         }
                     }
                 ]
+            });
+
+            $('#authors').on('click', '.show-bs-modal', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                let deletemodal = $('#modal-delete');
+                deletemodal.find('.modal-body p').text('Are you sure you want to delete this author?');
+                $('#delete-id').val(id);
+                $('#delete-form').attr('action', '/admin/authors/delete');
+                deletemodal.modal('show');
+            });
+            $('#delete-button').click(function(){
+                $('#delete-form').submit();
             });
         });
     </script>

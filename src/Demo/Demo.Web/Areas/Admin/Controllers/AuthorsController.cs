@@ -30,6 +30,36 @@ namespace Demo.Web.Areas.Admin.Controllers
             var model = new AddAuthorModel();
             return View(model);
         }
+        public IActionResult Update()
+        {
+            var model = new UpdateAuthorModel();
+            return View(model);
+        }
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Delete(Guid id)
+        {
+            try
+            {
+                _authorService.DeleteAuthor(id);
+                TempData.Put("ResponseMessage", new ResponseModel
+                {
+                    Message = "Author Delete Sucessfully",
+                    Type = ResponseTypes.Success,
+                });
+                return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Failed to Delete Author");
+                TempData.Put("ResponseMessage", new ResponseModel
+                {
+                    Message = "Author Can't be deleted",
+                    Type = ResponseTypes.Danger,
+                });
+            }
+            return View();
+        }
+
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Add(AddAuthorModel model)
         {

@@ -30,6 +30,12 @@ namespace Demo.Application.Services
            
         }
 
+        public void DeleteAuthor(Guid id)
+        {
+            _applicationUnitOfWork.AuthorRepository.Remove(id);
+            _applicationUnitOfWork.Save();
+        }
+
         public (IList<Author> data, int total, int totalDisplay) GetAuthors(int pageIndex, int pageSize, string? order, DataTablesSearch search)
         {
             return _applicationUnitOfWork.AuthorRepository.GetPagedAuthors(pageIndex, pageSize, order, search);
