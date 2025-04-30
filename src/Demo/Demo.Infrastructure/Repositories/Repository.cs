@@ -29,6 +29,7 @@ namespace Demo.Infrastructure.Repositories
         {
             await _dbSet.AddAsync(entity);
         }
+        
 
         public virtual async Task RemoveAsync(TKey id)
         {
@@ -46,6 +47,10 @@ namespace Demo.Infrastructure.Repositories
                 }
                 _dbSet.Remove(entityToDelete);
             });
+        }
+        public virtual void Update(TEntity entity)
+        {
+            _dbSet.Update(entity);
         }
 
         public virtual async Task RemoveAsync(Expression<Func<TEntity, bool>> filter)

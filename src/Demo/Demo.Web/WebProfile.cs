@@ -9,6 +9,7 @@ namespace Demo.Web
         public WebProfile() 
         {
             CreateMap<AddAuthorModel, Author>().ReverseMap();
+            CreateMap<UpdateAuthorModel, Author>().ReverseMap();
         }
     }
 }

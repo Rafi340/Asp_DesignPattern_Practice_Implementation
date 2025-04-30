@@ -30,9 +30,53 @@ namespace Demo.Web.Areas.Admin.Controllers
             var model = new AddAuthorModel();
             return View(model);
         }
-        public IActionResult Update()
+        public IActionResult Update(Guid id)
         {
             var model = new UpdateAuthorModel();
+            var author = _authorService.GetAuthor(id);
+            _mapper.Map(author, model);
+            return View(model);
+        }
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Update(UpdateAuthorModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var author = _mapper.Map<Author>(model);
+
+                    _authorService.Update(author);
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message = "Author Updated",
+                        Type = ResponseTypes.Success,
+                    });
+                    return RedirectToAction("Index");
+
+                }
+                catch (DuplicateAuthorNameException IO)
+                {
+                    ModelState.AddModelError("DuplicateAuthor", IO.Message);
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message = IO.Message,
+                        Type = ResponseTypes.Danger,
+                    });
+                }
+                catch (Exception ex)
+                {
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message = "Author added Failes",
+                        Type = ResponseTypes.Danger,
+                    });
+                    _logger.LogError(ex, "Failed to Add Author");
+
+                    return View(model);
+                }
+            }
             return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]

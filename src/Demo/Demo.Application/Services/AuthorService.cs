@@ -36,9 +36,25 @@ namespace Demo.Application.Services
             _applicationUnitOfWork.Save();
         }
 
+        public Author GetAuthor(Guid id)
+        {
+           return _applicationUnitOfWork.AuthorRepository.GetById(id);
+        }
+
         public (IList<Author> data, int total, int totalDisplay) GetAuthors(int pageIndex, int pageSize, string? order, DataTablesSearch search)
         {
             return _applicationUnitOfWork.AuthorRepository.GetPagedAuthors(pageIndex, pageSize, order, search);
+        }
+
+        public void Update(Author author)
+        {
+            if (!_applicationUnitOfWork.AuthorRepository.IsNameDuplicate(author.Name, author.Id))
+            {
+                _applicationUnitOfWork.AuthorRepository.Add(author);
+                _applicationUnitOfWork.Save();
+            }
+            else
+                throw new DuplicateAuthorNameException();
         }
     }
 }
