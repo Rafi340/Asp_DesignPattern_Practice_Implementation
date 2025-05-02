@@ -31,7 +31,7 @@ namespace Demo.Infrastructure.Repositories
             if (string.IsNullOrEmpty(search.Value))
                 return GetDynamic(null, order, null, pageIndex, pageSize, true);
             else
-                return GetDynamic(x => x.Name.Contains(search.Value), order, null, pageIndex, pageSize, true);
+                return GetDynamic(x => x.Name.Contains(search.Value) || x.Biography.Contains(search.Value), order, null, pageIndex, pageSize, true);
         }
     }
 }
