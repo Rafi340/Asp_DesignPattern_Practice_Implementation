@@ -47,9 +47,9 @@ namespace Demo.Application.Services
             return _applicationUnitOfWork.AuthorRepository.GetPagedAuthors(pageIndex, pageSize, order, search);
         }
 
-        public (IList<Author> data, int total, int totalDisplay) GetAuthorsSP(int pageIndex, int pageSize, string? order, AuthorSearchDto search)
+        public async Task<(IList<Author> data, int total, int totalDisplay)> GetAuthorsSP(int pageIndex, int pageSize, string? order, AuthorSearchDto search)
         {
-            return _applicationUnitOfWork.GetAuthorSP(pageIndex, pageSize, order, search);
+            return await _applicationUnitOfWork.GetAuthorSP(pageIndex, pageSize, order, search);
         }
 
         public void Update(Author author)
