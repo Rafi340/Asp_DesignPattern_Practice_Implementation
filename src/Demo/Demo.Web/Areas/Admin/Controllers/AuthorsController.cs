@@ -180,12 +180,12 @@ namespace Demo.Web.Areas.Admin.Controllers
             
         }
         [HttpPost]
-        public JsonResult GetAuthorJsonDataSP([FromBody] AuthorListModel model)
+        public async Task<JsonResult> GetAuthorJsonDataSP([FromBody] AuthorListModel model)
         {
             try
             {
                 var searchDto = _mapper.Map<AuthorSearchDto>(model.SearchItem);
-                var (data, total, totalDisplay) = _authorService.GetAuthorsSP(model.PageIndex, model.PageSize, model.FormatSortExpression("Name", "Biography", "Rating", "Id"), searchDto);
+                var (data, total, totalDisplay) = await _authorService.GetAuthorsSP(model.PageIndex, model.PageSize, model.FormatSortExpression("Name", "Biography", "Rating", "Id"), searchDto);
                 var author = new
                 {
                     recordsTotal = total,
