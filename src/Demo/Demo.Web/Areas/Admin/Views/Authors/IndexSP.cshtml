@@ -156,8 +156,8 @@
                         d.SearchItem = {
                             Name: $("#SearchItem_Name").val(),
                             Biography: $("#SearchItem_Biography").val(),
-                            RatingFrom: $("#SearchItem_RatingFrom").val() === ""? 0 : $("#SearchItem_RatingFrom").val(),
-                            RatingTo: $("#SearchItem_RatingTo").val() === "" ? 0 : $("#SearchItem_RatingTo").val()
+                            RatingFrom: $("#SearchItem_RatingFrom").val() === ""? null : $("#SearchItem_RatingFrom").val(),
+                            RatingTo: $("#SearchItem_RatingTo").val() === "" ? null : $("#SearchItem_RatingTo").val()
                         };
                         return JSON.stringify(d);
                     },
