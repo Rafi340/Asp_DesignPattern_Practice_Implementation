@@ -2,6 +2,7 @@
 using Demo.Application.Exceptions;
 using Demo.Application.Services;
 using Demo.Domain;
+using Demo.Domain.Dtos;
 using Demo.Domain.Entities;
 using Demo.Domain.Services;
 using Demo.Infrastructure;
@@ -177,6 +178,35 @@ namespace Demo.Web.Areas.Admin.Controllers
                 return Json(DataTables.EmptyResult);
             }
             
+        }
+        [HttpPost]
+        public JsonResult GetAuthorJsonDataSP([FromBody] AuthorListModel model)
+        {
+            try
+            {
+                var searchDto = _mapper.Map<AuthorSearchDto>(model.SearchItem);
+                var (data, total, totalDisplay) = _authorService.GetAuthorsSP(model.PageIndex, model.PageSize, model.FormatSortExpression("Name", "Biography", "Rating", "Id"), searchDto);
+                var author = new
+                {
+                    recordsTotal = total,
+                    recoardsFilters = totalDisplay,
+                    data = (from record in data
+                            select new string[]
+                            {
+                                HttpUtility.HtmlEncode(record.Name),
+                                HttpUtility.HtmlEncode(record.Biography),
+                                HttpUtility.HtmlEncode(record.Rating),
+                                record.Id.ToString()
+                            }).ToArray()
+                };
+                return Json(author);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "There was a problem with author");
+                return Json(DataTables.EmptyResult);
+            }
+
         }
     }
 }

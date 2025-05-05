@@ -1,5 +1,6 @@
 ﻿using Demo.Application.Exceptions;
 using Demo.Domain;
+using Demo.Domain.Dtos;
 using Demo.Domain.Entities;
 using Demo.Domain.Services;
 using System;
@@ -44,6 +45,11 @@ namespace Demo.Application.Services
         public (IList<Author> data, int total, int totalDisplay) GetAuthors(int pageIndex, int pageSize, string? order, DataTablesSearch search)
         {
             return _applicationUnitOfWork.AuthorRepository.GetPagedAuthors(pageIndex, pageSize, order, search);
+        }
+
+        public (IList<Author> data, int total, int totalDisplay) GetAuthorsSP(int pageIndex, int pageSize, string? order, AuthorSearchDto search)
+        {
+            return _applicationUnitOfWork.GetAuthorSP(pageIndex, pageSize, order, search);
         }
 
         public void Update(Author author)
