@@ -1,7 +1,10 @@
-﻿namespace Demo.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Demo.Domain.Entities
 {
     public class Book : IEntity<Guid>
     {
+        [Key]
         public Guid Id { get; set; }
         public string Title { get; set; }
         public Guid AuthorId { get; set; }

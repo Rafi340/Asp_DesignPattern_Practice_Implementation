@@ -3,7 +3,8 @@ using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 using Demo;
 using Demo.Application.Features.Books.Commands;
-using Demo.Data;
+using Demo.Infrastructure.Extensions;
+//using Demo.Data;
 using Demo.Infrastructure;
 using Demo.Models.Demo;
 using Microsoft.AspNetCore.Hosting;
@@ -63,16 +64,22 @@ try
     builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     #endregion
 
+    #region Identity Configuration
+    builder.Services.AddIdentity();
+    #endregion
+
+
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
       options.UseSqlServer(connectionString, (x) => x.MigrationsAssembly(migrationAssembly)));
 
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-    builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-        .AddEntityFrameworkStores<ApplicationDbContext>();
+    
+    //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    //    .AddEntityFrameworkStores<ApplicationDbContext>();
     builder.Services.AddControllersWithViews();
 
     //builder.Services.AddSingleton<IItem, Item>();
+    builder.Services.AddRazorPages();
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.
