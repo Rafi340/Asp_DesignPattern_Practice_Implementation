@@ -1,5 +1,6 @@
 ﻿using Demo.Domain.Entities;
 using Demo.Infrastructure.Identity;
+using Demo.Infrastructure.Seeds;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +31,12 @@ namespace Demo.Infrastructure
                 optionsBuilder.UseSqlServer(_connectionString, (x) => x.MigrationsAssembly(_migrationAssembly));
             }
             base.OnConfiguring(optionsBuilder);
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<ApplicationRole>().HasData(RoleSeed.GetRoles());
+            base.OnModelCreating(builder);
         }
     }
 }

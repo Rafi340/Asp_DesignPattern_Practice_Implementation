@@ -30,7 +30,7 @@ namespace Demo.Infrastructure
 
         public async Task SaveAsync()
         {
-            _dbContext.SaveChangesAsync();
+           await _dbContext.SaveChangesAsync();
         }
     }
 }

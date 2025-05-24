@@ -7,12 +7,13 @@ using Demo.Domain.Entities;
 using Demo.Domain.Services;
 using Demo.Infrastructure;
 using Demo.Web.Areas.Admin.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Web;
 
 namespace Demo.Web.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area("Admin"), Authorize(Roles ="Admin,HR")]
     public class AuthorsController(IAuthorService authorService, ILogger<AuthorsController> logger,
         IMapper mapper) : Controller
     {

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Demo.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250511185942_UpdateUserTable")]
-    partial class UpdateUserTable
+    [Migration("20250524130524_UserRoleSeed")]
+    partial class UserRoleSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,6 +93,29 @@ namespace Demo.Web.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7870041d-77ef-4788-bae3-6d092e4e053b"),
+                            ConcurrencyStamp = "4/19/2025 1:02:01 AM",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("66cb7e8a-0d51-42c0-82dd-dcc1a80491d9"),
+                            ConcurrencyStamp = "4/19/2025 2:03:04 AM",
+                            Name = "HR",
+                            NormalizedName = "HR"
+                        },
+                        new
+                        {
+                            Id = new Guid("b0cba364-772b-4c50-ab32-4af1a9e5dc84"),
+                            ConcurrencyStamp = "4/19/2025 2:03:04 AM",
+                            Name = "Author",
+                            NormalizedName = "AUTHOR"
+                        });
                 });
 
             modelBuilder.Entity("Demo.Infrastructure.Identity.ApplicationRoleClaim", b =>

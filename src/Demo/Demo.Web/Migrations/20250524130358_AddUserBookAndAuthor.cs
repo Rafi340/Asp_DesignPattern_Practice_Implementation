@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Demo.Web.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateUserTable : Migration
+    public partial class AddUserBookAndAuthor : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

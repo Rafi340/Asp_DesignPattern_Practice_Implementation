@@ -9,6 +9,8 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Identity\Pages\Account\Register.cshtml.cs" />
+    <Compile Remove="Data\Migrations\20250511183553_UpdateUserTable.cs" />
+    <Compile Remove="Data\Migrations\20250511183553_UpdateUserTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +45,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Identity\Data\" />
     <Folder Include="Data\Migrations\" />
     <Folder Include="Logs\" />
     <Folder Include="Migrations\" />
