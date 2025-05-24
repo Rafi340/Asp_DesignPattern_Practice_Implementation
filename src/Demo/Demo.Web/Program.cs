@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
+using Demo.Domain;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -79,6 +80,8 @@ try
     builder.Services.AddControllersWithViews();
 
     //builder.Services.AddSingleton<IItem, Item>();
+
+    builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
     builder.Services.AddRazorPages();
     var app = builder.Build();
 

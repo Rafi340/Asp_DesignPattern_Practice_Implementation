@@ -4,8 +4,10 @@ using Demo.Application.Features.Books.Commands;
 using Demo.Application.Services;
 using Demo.Domain.Repository;
 using Demo.Domain.Services;
+using Demo.Domain.Utilities;
 using Demo.Infrastructure;
 using Demo.Infrastructure.Repositories;
+using Demo.Infrastructure.Utilities;
 using Demo.Models.Demo;
 
 namespace Demo
@@ -31,6 +33,7 @@ namespace Demo
             builder.RegisterType<BookService>().As<IBookService>().InstancePerLifetimeScope();
             builder.RegisterType<AuthorRepository>().As<IAuthorRepository>().InstancePerLifetimeScope();
             builder.RegisterType<AuthorService>().As<IAuthorService>().InstancePerLifetimeScope();
+            builder.RegisterType<EmailUtility>().As<IEmailUtility>().InstancePerLifetimeScope();
             builder.RegisterType<BookAddCommandHandler>().AsSelf();
             base.Load(builder);
         }

@@ -1,4 +1,5 @@
-﻿using Demo.Infrastructure.Identity;
+﻿using Demo.Domain.Utilities;
+using Demo.Infrastructure.Identity;
 using Demo.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Text;
+using System.Text.Encodings.Web;
 
 namespace Demo.Web.Controllers
 {
@@ -18,17 +20,19 @@ namespace Demo.Web.Controllers
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-
+        private readonly IEmailUtility _emailUtility;   
         public AccountController(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<RegisterModel> logger)
+            ILogger<RegisterModel> logger,
+            IEmailUtility emailUtility)
         {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
+            _emailUtility = emailUtility;
             _logger = logger;
         }
         [AllowAnonymous]
@@ -61,14 +65,14 @@ namespace Demo.Web.Controllers
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = userId, code = code, returnUrl = model.ReturnUrl },
+                    var callbackUrl = Url.Action("ConfirmEmail",
+                        "Account",
+                        values: new { area = "", userId = user.Id, code = code, returnUrl = model.ReturnUrl },
                         protocol: Request.Scheme);
 
-                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    _emailUtility.SendEmail(model.Email, $"{model.FirstName} {model.LastName}", "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
+                        );
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
