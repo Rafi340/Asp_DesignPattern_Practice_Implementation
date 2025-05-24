@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Web.Areas.Admin.Controllers
 {
-    [Area("Admin"), Authorize("Admin")] 
+    [Area("Admin"), Authorize(Roles= "Admin")]
     public class UsersController : Controller
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -26,6 +26,7 @@ namespace Demo.Web.Areas.Admin.Controllers
             _userStore = userStore;
             _signInManager = signInManager;
             _logger = logger;
+            _emailStore = GetEmailStore();
         }
         public async Task<ActionResult> AddUserAsync()
         {
@@ -66,6 +67,8 @@ namespace Demo.Web.Areas.Admin.Controllers
             return View(model);
         }
 
+       
+
         private ApplicationUser CreateUser()
         {
             try
@@ -78,6 +81,14 @@ namespace Demo.Web.Areas.Admin.Controllers
                     $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
+        }
+        private IUserEmailStore<ApplicationUser> GetEmailStore()
+        {
+            if (!_userManager.SupportsUserEmail)
+            {
+                throw new NotSupportedException("The default UI requires a user store with email support.");
+            }
+            return (IUserEmailStore<ApplicationUser>)_userStore;
         }
     }
 }

@@ -81,8 +81,23 @@
 
 
                             </div>
-                            <div id="ratingHelp" class="form-text">
+                            <div id="confirmPasswordHelp" class="form-text">
                                 Confirm Password
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Role" class="form-label">User Role</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="Role"
+                                       aria-describedby="roleHelp"
+                                       asp-for="Role" />
+                                <span asp-validation-for="Role" class="text-danger"></span>
+
+
+                            </div>
+                            <div id="roleHelp" class="form-text">
+                                Provide a Role
                             </div>
 
                         </div>

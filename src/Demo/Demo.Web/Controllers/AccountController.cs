@@ -54,7 +54,7 @@ namespace Demo.Web.Controllers
                 await _userStore.SetUserNameAsync(user, model.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, model.Password);
-
+                await _userManager.AddToRoleAsync(user, "Author");
                 if (result.Succeeded)
                 {
                    
@@ -154,7 +154,10 @@ namespace Demo.Web.Controllers
 
             return LocalRedirect(returnUrl);
         }
-
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
         private ApplicationUser CreateUser()
         {
