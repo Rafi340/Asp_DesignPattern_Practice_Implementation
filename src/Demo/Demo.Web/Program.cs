@@ -43,14 +43,14 @@ try
     builder.Services.AddKeyedScoped<IProduct, Product>("Config1");
     builder.Services.AddKeyedScoped<IProduct, Product2>("Config2");
     #endregion
-    // Serilog config
+    #region serilog configuration
     builder.Host.UseSerilog((context, lc) => 
      lc.MinimumLevel.Debug()
      .MinimumLevel.Override("Microsoft" , LogEventLevel.Warning)
      .Enrich.FromLogContext()
      .ReadFrom.Configuration(builder.Configuration)
      );
-
+    #endregion
 
     #region Mediator
     builder.Services.AddMediatR(cfg => 
