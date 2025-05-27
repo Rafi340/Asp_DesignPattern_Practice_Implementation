@@ -85,7 +85,7 @@ namespace Demo.Web.Areas.Admin.Controllers
             }
             return View(model);
         }
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken, Authorize(Policy ="CustomAccess")]
         public IActionResult Delete(Guid id)
         {
             try
