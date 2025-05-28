@@ -22,7 +22,6 @@ namespace Demo.Controllers
         {
             var item = _item.Price();
             var product = _product.GetPrice();
-            _logger.LogInformation("Home page start..........");
             return View();
         }
 
