@@ -40,7 +40,7 @@ namespace Demo.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Author");
+                    b.ToTable("Author", (string)null);
                 });
 
             modelBuilder.Entity("Demo.Domain.Entities.Book", b =>
@@ -61,7 +61,7 @@ namespace Demo.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Book");
+                    b.ToTable("Book", (string)null);
                 });
 
             modelBuilder.Entity("Demo.Infrastructure.Identity.ApplicationRole", b =>

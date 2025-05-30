@@ -59,6 +59,7 @@ namespace Demo.Web.Controllers
                 await _emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, model.Password);
                 await _userManager.AddToRoleAsync(user, "Author");
+                await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("age", (DateTime.UtcNow.Subtract(model.DateOfBirth).Days / 365).ToString()));
                 //await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("create_user", "allowed"));
                 if (result.Succeeded)
                 {

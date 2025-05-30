@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Demo.Models;
 using Demo.Models.Demo;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Controllers
@@ -22,6 +23,11 @@ namespace Demo.Controllers
         {
             var item = _item.Price();
             var product = _product.GetPrice();
+            return View();
+        }
+        [Authorize(Policy = "AgeRestriction")]
+        public IActionResult AgeTest()
+        {
             return View();
         }
 
