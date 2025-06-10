@@ -28,7 +28,7 @@ namespace Demo.Application.Services
             }
             else
                 throw new DuplicateAuthorNameException();
-           
+
         }
 
         public void DeleteAuthor(Guid id)
