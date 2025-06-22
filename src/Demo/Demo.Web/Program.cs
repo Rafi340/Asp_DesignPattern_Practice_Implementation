@@ -122,6 +122,7 @@ try
 
     app.MapRazorPages()
        .WithStaticAssets();
+    Log.Information("Application Started........");
 
     app.Run();
 }catch (Exception ex)
