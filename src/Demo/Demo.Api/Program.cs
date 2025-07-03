@@ -7,6 +7,7 @@ using Demo.Infrastructure;
 using Demo.Infrastructure.Extensions;
 using Demo.Api;
 using Microsoft.EntityFrameworkCore;
+using Demo.Application.Features.Books.Commands;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -27,6 +28,11 @@ try
      .Enrich.FromLogContext()
      .ReadFrom.Configuration(builder.Configuration)
      );
+    #endregion
+
+    #region Mediator
+    builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(BookAddCommand).Assembly));
     #endregion
 
 

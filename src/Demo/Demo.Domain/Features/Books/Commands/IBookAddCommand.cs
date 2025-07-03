@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Domain.Features.Queries
+namespace Demo.Domain.Features.Books.Commands
 {
-    public interface IBookGetQuery
+    public interface IBookAddCommand
     {
-        Book Get(Guid id);
+        void Execute();
     }
 }

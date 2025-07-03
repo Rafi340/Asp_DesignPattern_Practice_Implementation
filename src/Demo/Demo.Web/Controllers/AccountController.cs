@@ -21,12 +21,16 @@ namespace Demo.Web.Controllers
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailUtility _emailUtility;   
+        private readonly ITokenService _tokenService;
+        private readonly IConfiguration _configuration;
         public AccountController(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailUtility emailUtility)
+            IEmailUtility emailUtility,
+            ITokenService tokenService,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -34,6 +38,8 @@ namespace Demo.Web.Controllers
             _signInManager = signInManager;
             _emailUtility = emailUtility;
             _logger = logger;
+            _tokenService = tokenService;
+            _configuration = configuration;
         }
         [AllowAnonymous]
         public async Task<IActionResult> RegisterAsync(string returnUrl = null)
@@ -129,7 +135,14 @@ namespace Demo.Web.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+                    var claims = (await _userManager.GetClaimsAsync(user)).ToArray();
+                    var token = await _tokenService.GetJwtToken(claims,
+                            _configuration["Jwt:Key"],
+                            _configuration["Jwt:Issuer"],
+                            _configuration["Jwt:Audience"]
+                        );
+                    HttpContext.Session.SetString("token", token);
                     return LocalRedirect(model.ReturnUrl);
                 }
                 if (result.RequiresTwoFactor)
